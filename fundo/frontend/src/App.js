@@ -1,10 +1,10 @@
 import React from "react";
-import LoginForm from "./components/LoginForm";
+import CreateProjectForm from "./components/CreateProjectForm";
 
 function App() {
   return (
     <div className="App">
-      <LoginForm />
+      <CreateProjectForm />
     </div>
   );
 }
