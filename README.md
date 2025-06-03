@@ -18,7 +18,7 @@
 4. [Endpoints REST API et Sécurité](#4-endpoints-rest-api-et-sécurité)  
 5. [Schéma GraphQL avec Graphene-Django](#5-schéma-graphql-avec-graphene-django)  
 6. [Intégration de l'Assistant IA (Google Gemini)](#6-intégration-de-lassistant-ia-google-gemini)
-7. [Intégration de l'Assistant IA (Google Gemini)](#7-intégration-de-lassistant-ia-google-gemini)  
+7. [Interface utilisateur avec l'Assistant IA (Frontend + GraphQL)](#7-interface-utilisateur-avec-lassistant-ia-frontend--graphql)
 8. [Paramètres de Sécurité](#8-paramètres-de-sécurité)  
 9. [Intégration du Projet](#9-intégration-du-projet)  
 10. [Projet Exécutable et Correctement Configuré](#10-projet-exécutable-et-correctement-configuré)  
@@ -99,13 +99,13 @@ Fundo intègre un **assistant intelligent** propulsé par l'API **Google Gemini*
 * **Point d'accès :** Une mutation GraphQL spécifique (`askGeminiAssistant`) est exposée pour interagir avec l'assistant.
 ---
 
-### 7. Intégration de l'Assistant IA (Google Gemini)
+### 7. Interface utilisateur avec l'Assistant IA (Frontend + GraphQL)
 
-Fundo intègre un **assistant intelligent** propulsé par l'API **Google Gemini**, offrant une nouvelle dimension d'interaction aux utilisateurs.
+L’assistant IA de Fundo est également intégré côté **frontend** via l’utilisation de **GraphQL** et de la bibliothèque **Apollo Client**.
 
-* **Fonctionnalité :** L'assistant IA est capable de traiter des requêtes textuelles, potentiellement pour aider les utilisateurs à formuler des idées de projets, à obtenir des informations sur le crowdfunding, ou à répondre à des questions générales.
-* **Implémentation :** L'intégration est réalisée via la bibliothèque `google-generativeai` et les requêtes sont traitées de manière **asynchrone** (via Celery ou Django-Q) pour garantir une expérience utilisateur fluide.
-* **Point d'accès :** Une mutation GraphQL spécifique (`askGeminiAssistant`) est exposée pour interagir avec l'assistant.
+* **Interface graphique :** Une interface utilisateur interactive permet à l’utilisateur de poser des questions à l’assistant dans une zone de saisie dédiée, puis d’afficher les réponses générées dynamiquement.
+* **Technologie utilisée :** L’envoi des requêtes se fait via une **mutation GraphQL** (`askGeminiAssistant`) connectée à l’API Google Gemini, avec **Apollo Client** pour la gestion des états et des données.
+* **Expérience utilisateur :** L’échange avec l’IA se fait en temps réel dans l’application, offrant une expérience fluide et intuitive.
 
 ---
 
