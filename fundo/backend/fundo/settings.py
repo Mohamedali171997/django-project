@@ -1,7 +1,25 @@
 # backend/fundo/settings.py
-
+from dotenv import load_dotenv
 from pathlib import Path
+import os
+
+import datetime
+from datetime import timedelta
 # from corsheaders.defaults import default_headers # Not needed if you define CORS_ALLOW_HEADERS explicitly
+load_dotenv() # Cette ligne doit être appelée très tôt
+
+# Récupérer la clé API de Gemini à partir de l'environnement
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+# Cette vérification est utile pour le débogage. Vous pouvez la laisser ou la retirer une fois que c'est fonctionnel.
+if not GEMINI_API_KEY:
+    raise Exception("GEMINI_API_KEY non trouvée. Assurez-vous que votre fichier .env est configuré correctement et que python-dotenv est installé.")
+
+'''
+GRAPHENE = {
+    'SCHEMA': 'core.schema.schema' # Indique à Graphene où trouver votre schéma principal
+}
+'''
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -12,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-w(kyx=&q)idz(67bz8^l09w8k%rtxv#abd%z%h0b_88m&e2+m%'
+SECRET_KEY = 'i(u54k@nwz9j1gn@5b(v%5^@$0-#$ssd^m$@l&l*=i5r2$dy@g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,6 +51,8 @@ INSTALLED_APPS = [
     'graphene_django',
     'corsheaders', # Keep corsheaders here
     'core', # Your app
+    'rest_framework_simplejwt',
+    'graphql_jwt',
 ]
 
 MIDDLEWARE = [
@@ -45,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'graphql_jwt.middleware.JSONWebTokenMiddleware',
 ]
 
 ROOT_URLCONF = 'fundo.urls'
@@ -131,10 +152,62 @@ REST_FRAMEWORK = {
     # ]
 }
 
-
 GRAPHENE = {
     "SCHEMA": "core.schema.schema",
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ],
 }
+
+
+
+# --- AJOUTEZ LA CONFIGURATION SIMPLE_JWT et GRAPHQL_JWT ICI ---
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60), # Ajustez selon vos besoins
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1), # Ajustez selon vos besoins
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False,
+
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY, # Utilisez votre SECRET_KEY ici
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    "JTI_CLAIM": "jti",
+
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+}
+
+
+GRAPHQL_JWT = {
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_EXPIRATION_DELTA': timedelta(minutes=60), # Cohérent avec ACCESS_TOKEN_LIFETIME si c'est pour l'accès
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+    'JWT_ALLOW_ANY_CLASSES': [
+        'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    ],
+    # 'JWT_SECRET_KEY': SECRET_KEY, # Non nécessaire si SIMPLE_JWT.SIGNING_KEY est défini
+    'JWT_USER_MODEL': 'auth.User', # Spécifie le modèle User à utiliser (django.contrib.auth.models.User par défaut)
+}
+
+
+
 
 # MEDIA Files Settings
 import os # Ensure this import is at the top of the file if not already
@@ -166,3 +239,17 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken", # Important for CSRF protection with forms
     "x-requested-with",
 ]
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+
+
+#CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000",
+                        "http://127.0.0.1:3000",]
+
+

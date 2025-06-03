@@ -1,0 +1,83 @@
+/* frontend/src/FloatingChatButton.css */
+
+/* Style du bouton flottant */
+.floating-chat-button {
+    position: fixed; /* Position fixe par rapport à la fenêtre */
+    bottom: 20px; /* 20px du bas */
+    right: 20px; /* 20px de la droite */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Bouton rond */
+    background-color: #007bff; /* Couleur bleue */
+    color: white;
+    font-size: 2em;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Assure qu'il est au-dessus des autres éléments */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .floating-chat-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  .floating-chat-button .chat-icon {
+    /* Style pour l'emoji ou l'icône de chat */
+    font-size: 1.2em; /* Ajustez la taille de l'icône */
+  }
+  
+  .floating-chat-button .close-icon {
+    /* Style pour l'icône de fermeture (X) */
+    font-size: 1.5em; /* Ajustez la taille de l'icône */
+    font-weight: bold;
+  }
+  
+  /* Style de l'overlay du modal de chat */
+  .chat-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Arrière-plan semi-transparent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Juste en dessous du bouton flottant */
+  }
+  
+  /* Contenu du modal de chat */
+  .chat-modal-content {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 0; /* Le composant AssistantChat gère son propre padding */
+    width: 90%; /* Largeur sur mobile */
+    max-width: 500px; /* Largeur max sur desktop */
+    height: 90%; /* Hauteur sur mobile */
+    max-height: 600px; /* Hauteur max sur desktop */
+    overflow: hidden; /* Assure que le contenu du chat ne déborde pas */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Media queries pour l'adaptabilité */
+  @media (max-width: 768px) {
+    .floating-chat-button {
+      width: 50px;
+      height: 50px;
+      bottom: 15px;
+      right: 15px;
+      font-size: 1.8em;
+    }
+  
+    .chat-modal-content {
+      width: 95%;
+      height: 95%;
+    }
+  }

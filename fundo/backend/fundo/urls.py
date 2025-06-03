@@ -38,10 +38,13 @@ from core.views import (
     UserCreateView, # <-- Make sure UserCreateView is included here
 )
 
-
+# --- AJOUTEZ CETTE LIGNE ---
+from graphene_django.views import GraphQLView
+# --- ET CELLE-CI POUR VOTRE SCHEMA ---
+from core.schema import schema # Assurez-vous que le chemin est correct pour votre schema.py
 #from graphene_django.views import GraphQLView
 #from graphql_jwt.decorators import jwt_cookie, jwt_token 
-
+from django.views.decorators.csrf import csrf_exempt
 
 # Initialize the router ONCE and register ALL ViewSets
 router = DefaultRouter()
@@ -69,6 +72,10 @@ urlpatterns = [
     path('api/projects/<int:project_pk>/comments/',
          CommentViewSet.as_view({'get': 'list'}),
          name='project-comments'),
+    # Endpoint GraphQL
+    #path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
+    #path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
 
 
         # path('graphql/', jwt_token(jwt_cookie(GraphQLView.as_view(graphiql=True))), name='graphql'),

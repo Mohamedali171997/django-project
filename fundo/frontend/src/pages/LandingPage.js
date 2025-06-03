@@ -301,7 +301,7 @@ const LandingPage = () => {
 
             {/* Interactive Map Section */}
             <section style={styles.mapSection}>
-                <h2 style={styles.sectionTitle}>Carte interactive de la Tunisie</h2>
+                <h2 style={styles.sectionTitle}>voir les projet de la Tunisie</h2>
                 <p style={{fontSize: '1.1em', color: '#555', marginBottom: '30px'}}>
                     Découvrez les projets en cours dans différentes régions tunisiennes. Cliquez sur les marqueurs pour en savoir plus.
                 </p>
